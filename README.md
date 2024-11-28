@@ -1,9 +1,7 @@
-# Experiment
-##
-The project only publishes the project framework and models, and the algorithms for individual research reproduction are not uploaded and published.
-## dataset loaer
+# rPPG Toolbox
+>The project only publishes the project framework and models, and the algorithms for individual research reproduction are not uploaded and published.
 
-## 运行
+## 环境
 
 ### 安装 conda，创建环境
 
@@ -33,7 +31,6 @@ conda install pytorch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1  pytorch-cuda
 
 ```
 pip install -r requirements.txt
-# dlib
+# dlib 需要时安装
 # conda install -c conda-forge dlib=19.24.0
 ```
-### 编译安装支持的 ffmpeg
