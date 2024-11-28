@@ -3,6 +3,7 @@ import numpy as np
 from common.import_tqdm import tqdm
 import os
 import re
+from typing import List, Tuple
 
 class ZJXU_HR_V1_Reader():
     def print_root_path(self):
@@ -11,7 +12,7 @@ class ZJXU_HR_V1_Reader():
         self.dataset_path = os.path.expanduser(dataset_path)
         self.dataset_list = dataset_list
         pass
-    def read(self,show_tqdm=True,print_start=True,print_end=True):
+    def read(self,show_tqdm=True,print_start=True,print_end=True) -> Tuple[List[str],List[List[float]]]:
         list_of_video_path = []
         list_of_ppg_data = []
         self.print_root_path()

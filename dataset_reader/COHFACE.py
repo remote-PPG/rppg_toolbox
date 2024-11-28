@@ -4,6 +4,8 @@ from common.import_tqdm import tqdm
 import os
 import re
 import h5py
+from typing import List, Tuple
+
 class Protocol:
     CLEAN = {
         'train':[
@@ -76,7 +78,7 @@ class COHFACEDatasetReader():
         self.dataset_path = os.path.expanduser(dataset_path)
         self.dataset_list = dataset_list
         pass
-    def read(self,show_tqdm=True,print_start=True,print_end=True):
+    def read(self,show_tqdm=True,print_start=True,print_end=True) -> Tuple[List[str],List[List[float]]]:
         list_of_video_path = []
         list_of_ppg_data = []
         self.print_root_path()

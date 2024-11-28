@@ -12,7 +12,7 @@ class UBFCPhysDatasetReader():
         self.dataset = dataset
         self.dataset_list = dataset_list
         pass
-    def read(self,show_tqdm=True,print_start=True,print_end=True):
+    def read(self,show_tqdm=True,print_start=True,print_end=True) -> Tuple[List[str],List[List[float]]]:
         list_of_video_path = []
         list_of_ppg_data = []
         self.print_root_path()
