@@ -1,4 +1,5 @@
 import torch
+from ..common.cuda_info import get_device
 
 class DeepPhys(torch.nn.Module):
     def __init__(self):
@@ -169,7 +170,7 @@ class AttentionBlock(torch.nn.Module):
 
 
 
-from common.cuda_info import get_device
+
 model = DeepPhys()
 device = get_device()
 model = model.to(device)

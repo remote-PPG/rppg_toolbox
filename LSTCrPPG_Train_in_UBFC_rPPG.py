@@ -1,16 +1,16 @@
 # %%
-from dataset_reader.UBFC_rPPG import UBFCrPPGsDatasetReader
-from data_generator.LSTCrPPG import LSTCrPPGDataGenerator
-from common.cache import CacheType
-from data_generator.LSTCrPPG import LSTCrPPGDataConfig
-from dataset_reader.UBFC_rPPG import UBFCrPPGsDatasetReader
-from common.cache import CacheType
-from stepbystep.v4 import StepByStep
+from src.dataset_reader.UBFC_rPPG import UBFCrPPGsDatasetReader
+from src.data_generator.LSTCrPPG import LSTCrPPGDataGenerator
+from src.common.cache import CacheType
+from src.data_generator.LSTCrPPG import LSTCrPPGDataConfig
+from src.dataset_reader.UBFC_rPPG import UBFCrPPGsDatasetReader
+from src.common.cache import CacheType
+from src.stepbystep.v4 import StepByStep
 from torch import optim
-from model.LSTCrPPG import LSTCrPPG
-from loss.LSTCrPPG import LSTCrPPGLoss
+from src.model import LSTCrPPG
+from src.loss import LSTCrPPGLoss
 from torch.nn import MSELoss
-# from loss.Physnet import Neg_Pearson
+# from .loss import Neg_PearsonLoss
 
 
 USE_CACHED_UPPER_MODEL = False
@@ -30,7 +30,7 @@ BATCH = 2
 
 model = LSTCrPPG()
 loss = LSTCrPPGLoss()
-# loss = Neg_Pearson()
+# loss = Neg_PearsonLoss()
 optimizer = optim.Adam(model.parameters(),lr=5e-5)
 sbs_lstc_rppg = StepByStep(model,loss,optimizer)
 

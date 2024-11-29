@@ -1,8 +1,7 @@
 import torch
-from common.filter import detrend, lowpass_filter
+from ..common.filter import detrend, lowpass_filter
 from scipy import signal
 import numpy as np
-from singleton_pattern import load_config
 
 class POS(torch.nn.Module):
     def __init__(self):

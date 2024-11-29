@@ -1,6 +1,5 @@
 import torch
-from singleton_pattern import load_config
-from common.filter import lowpass_filter
+# from ..common.filter import lowpass_filter
 
 class GREEN(torch.nn.Module):
     def __init__(self):

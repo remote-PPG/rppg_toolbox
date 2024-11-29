@@ -1,11 +1,11 @@
 import threading
 import cv2
-from data_generator.Base import BaseDataGenerator as Base,BaseConfig
+from .Base import BaseDataGenerator as Base,BaseConfig
 import numpy as np
 import torch.nn.functional as F
-from common.ppg_interpolat import generate_interpolated_ppg_by_video_capture
-from common.cache import CacheType, DataSetCache
-from common.import_tqdm import tqdm
+from ..common.ppg_interpolat import generate_interpolated_ppg_by_video_capture
+from ..common.cache import CacheType, DataSetCache
+from ..common.import_tqdm import tqdm
 
 class DeepPhysDataConfig(BaseConfig):
     def __init__(self, cache_root: str, cache_type: CacheType, step=20, slice_interval=160, batch_size=1, load_to_memory=False, shuffle=False, num_workers=8, pin_memory=True, print_info=True,\

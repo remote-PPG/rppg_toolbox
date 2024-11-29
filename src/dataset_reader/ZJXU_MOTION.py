@@ -1,7 +1,7 @@
 from pathlib import Path
 import pandas as pd
 import numpy as np
-from common.import_tqdm import tqdm
+from ..common.import_tqdm import tqdm
 import os
 from typing import List, Tuple, Literal
 

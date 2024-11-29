@@ -1,7 +1,7 @@
 import os
 from torch.utils.data import DataLoader
-from common.cuda_info import get_device_str,is_cuda_available,set_cuda_index
-from common.cache import DataSetCache,CacheDataset,CacheType
+from ..common.cuda_info import get_device_str,is_cuda_available,set_cuda_index
+from ..common.cache import DataSetCache,CacheDataset,CacheType
 from typing import List, Tuple
 class BaseConfig:
     def __init__(self,cache_root:str,cache_type:CacheType,step=20,slice_interval=160,batch_size=1,load_to_memory=False,shuffle=False,num_workers=8,pin_memory=True,print_info=True) -> None:

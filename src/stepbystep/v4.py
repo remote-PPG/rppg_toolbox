@@ -10,8 +10,8 @@ from copy import deepcopy
 from torch.utils.tensorboard import SummaryWriter
 from torchvision.transforms import Normalize
 from torch.optim.lr_scheduler import LambdaLR
-from common.import_tqdm import tqdm
-from common.cuda_info import get_device
+from ..common.import_tqdm import tqdm
+from ..common.cuda_info import get_device
 
 plt.style.use('fivethirtyeight')
 

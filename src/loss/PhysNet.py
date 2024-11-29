@@ -26,7 +26,7 @@ Copyright (c) 2019
     BVP_label = (BVP_label-torch.mean(BVP_label)) /torch.std(BVP_label)	 	# normalize
     
     #3. Calculate the loss
-    loss_ecg = Neg_Pearson(rPPG, BVP_label)
+    loss_ecg = Neg_PearsonLoss(rPPG, BVP_label)
 
 '''
 ########################################
@@ -35,9 +35,9 @@ Copyright (c) 2019
 import torch
 from torch import nn
 
-class Neg_Pearson(nn.Module):    # Pearson range [-1, 1] so if < 0, abs|loss| ; if >0, 1- loss
+class Neg_PearsonLoss(nn.Module):    # Pearson range [-1, 1] so if < 0, abs|loss| ; if >0, 1- loss
     def __init__(self):
-        super(Neg_Pearson,self).__init__()
+        super(Neg_PearsonLoss,self).__init__()
         return
     def forward(self, preds, labels):       # tensor [Batch, Temporal]
         loss = 0

@@ -4,7 +4,7 @@ from PIL import Image
 import numpy as np
 from .box_utils import nms, _preprocess
 import cv2
-from common.cuda_info import get_device
+from ...common.cuda_info import get_device
 
 def run_first_stage(frame, net, scale, threshold):
     """Run P-Net, generate bounding boxes, and do NMS.

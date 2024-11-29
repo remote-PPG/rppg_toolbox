@@ -1,12 +1,12 @@
 import threading
 import cv2
-from data_generator.PhysNet import PhysNetDataConfig,PhysNetDataGenerator
+from .PhysNet import PhysNetDataConfig,PhysNetDataGenerator
 import numpy as np
 import torch.nn.functional as F
-from common.ppg_interpolat import generate_interpolated_ppg_by_video_capture
-from common.cache import CacheType, DataSetCache
-from common.import_tqdm import tqdm
-from face_detector.mtcnn.detector import detect_faces
+from ..common.ppg_interpolat import generate_interpolated_ppg_by_video_capture
+from ..common.cache import CacheType, DataSetCache
+from ..common.import_tqdm import tqdm
+from ..face_detector.mtcnn.detector import detect_faces
 
 class LSTCrPPGDataConfig(PhysNetDataConfig):
     pass

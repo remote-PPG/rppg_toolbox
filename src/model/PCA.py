@@ -1,7 +1,7 @@
 import torch
 from sklearn.decomposition import PCA as skpca
 import numpy as np
-from common.filter import lowpass_filter
+from ..common.filter import lowpass_filter
 
 class PCA(torch.nn.Module):
     def __init__(self):
