@@ -161,11 +161,3 @@ class ConvBlock3D(nn.Module):
 
     def forward(self, x):
         return self.conv_block_3d(x)
-
-
-model = LSTCrPPG()
-B, T, C, W, H = 1, 160, 3, 128, 128
-x = torch.randn(B, C, T, W, H)
-output = model(x)
-
-print(output.shape) 

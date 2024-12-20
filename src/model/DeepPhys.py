@@ -165,16 +165,3 @@ class AttentionBlock(torch.nn.Module):
         norm = norm.reshape(B, 1, 1, 1)
         mask = torch.div(mask * H * W, norm)
         return mask
-
-
-
-
-
-
-model = DeepPhys()
-device = get_device()
-model = model.to(device)
-B, T, C, W, H = 4, 120, 3, 128, 128
-x = torch.randn(B, 2, T, C, W, H).to(device)
-output = model(x)
-print(output.shape)
