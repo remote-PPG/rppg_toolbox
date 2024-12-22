@@ -27,7 +27,7 @@ dataset = 1
 model = PhysNet(T)
 loss = Neg_PearsonLoss()
 optimizer = optim.Adam(model.parameters(),lr=0.0001)
-sbs_physnet = StepByStep(model,loss,optimizer)
+sbs = StepByStep(model,loss,optimizer)
 
 
 if __name__ == '__main__':
@@ -72,16 +72,16 @@ if __name__ == '__main__':
     val_raw_data = val_dataset_reader.read() if VAL_CACHE == CacheType.NEW_CACHE else None
     val_dataloader = val_dataset_generator.generate(val_raw_data)
 
-    sbs_physnet.set_loaders(train_dataloader,val_dataloader)
-    sbs_physnet.set_tensorboard("physnet_train_in_UBFC-Phys")
+    sbs.set_loaders(train_dataloader,val_dataloader)
+    sbs.set_tensorboard("physnet_train_in_UBFC-Phys")
     try:
-        sbs_physnet.train(10)
+        sbs.train(10)
     except:
         pass
     finally:
-        sbs_physnet.save_best_checkpoint(MODEL_SAVE_PATH)
+        sbs.save_best_checkpoint(MODEL_SAVE_PATH)
 else:
     try:
-        sbs_physnet.load_checkpoint(MODEL_SAVE_PATH)
+        sbs.load_checkpoint(MODEL_SAVE_PATH)
     except:
         raise Exception('No any checkpoint, run train first!')

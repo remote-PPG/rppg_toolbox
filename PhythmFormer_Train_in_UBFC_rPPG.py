@@ -1,38 +1,37 @@
 # %%
 from src.dataset_reader.UBFC_rPPG import UBFCrPPGsDatasetReader
-from src.data_generator.LSTCrPPG import LSTCrPPGDataGenerator
+from data_generator.PhythmFormer import PhythmFormerDataGenerator,PhythmFormerDataGenerator
 from src.common.cache import CacheType
 from src.data_generator.LSTCrPPG import LSTCrPPGDataConfig
 from src.dataset_reader.UBFC_rPPG import UBFCrPPGsDatasetReader
 from src.common.cache import CacheType
 from src.stepbystep.v4 import StepByStep
 from torch import optim
-from src.model import LSTCrPPG
-from src.loss import LSTCrPPGLoss
-from src.loss import Neg_PearsonLoss
-
+from src.model import PhythmFormer
+from src.loss import Neg_PearsonLoss,PhythmFormer_Loss
+from torch import optim
 
 USE_CACHED_UPPER_MODEL = False
-MODEL_SAVE_PATH = r"./out/model/LSCTrPPG_train_in_UBFC-rPPG.mdl"
+MODEL_SAVE_PATH = r"./out/model/PhythmFormer_train_in_UBFC-rPPG.mdl"
 TRAIN_CACHE = CacheType.READ
 VAL_CACHE = CacheType.READ
 
 dataset_path = r"/public/share/weiyuanwang/dataset/UBFC-rPPG"
-train_cache_path = r"~/cache/LSCTrPPG/UBFC-rPPG/train"
-val_cache_path = r"~/cache/LSCTrPPG/UBFC-rPPG/val"
+train_cache_path = r"~/cache/PhythmFormer/UBFC-rPPG/train"
+val_cache_path = r"~/cache/PhythmFormer/UBFC-rPPG/val"
 
 STEP = 90
 T = 160
 WIDTH = 128
 HEIGHT = 128
-BATCH = 2
+BATCH = 4
 
-model = LSTCrPPG()
-loss = LSTCrPPGLoss()
-# loss = Neg_PearsonLoss()
-optimizer = optim.Adam(model.parameters(),lr=5e-5)
+model = PhythmFormer()
+loss = Neg_PearsonLoss()
+# loss = PhythmFormer_Loss(30,1)
+optimizer = optim.AdamW(model.parameters(), lr=9e-3, weight_decay=0)
+# See more details on the OneCycleLR scheduler here: https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.OneCycleLR.html
 sbs = StepByStep(model,loss,optimizer)
-
 
 if __name__ == '__main__':
     train_dataset_config = LSTCrPPGDataConfig(
@@ -71,22 +70,24 @@ if __name__ == '__main__':
         'subject1','subject3','subject4','subject5','subject49', 
         'subject8', 'subject9', 'subject48','subject46', 'subject47',
     ])
-    train_dataset_generator = LSTCrPPGDataGenerator(config=train_dataset_config)
+    train_dataset_generator = PhythmFormerDataGenerator(config=train_dataset_config)
     train_raw_data = train_dataset_reader.read() if TRAIN_CACHE == CacheType.NEW_CACHE else None
     train_dataloader = train_dataset_generator.generate(train_raw_data)
 
-    val_dataset_generator = LSTCrPPGDataGenerator(config=val_dataset_config)
+    val_dataset_generator = PhythmFormerDataGenerator(config=val_dataset_config)
     val_raw_data = val_dataset_reader.read() if VAL_CACHE == CacheType.NEW_CACHE else None
     val_dataloader = val_dataset_generator.generate(val_raw_data)
 
+    sbs.scheduler = optim.lr_scheduler.OneCycleLR(
+                optimizer, max_lr=9e-3, epochs=30, steps_per_epoch=len(train_dataloader)//BATCH)
     sbs.set_loaders(train_dataloader,val_dataloader)
-    sbs.set_tensorboard("LSTCrPPG_Train_in_UBFC-rPPG")
-    try:
-        sbs.train(20)
-    except:
-        pass
-    finally:
-        sbs.save_best_checkpoint(MODEL_SAVE_PATH)
+    sbs.set_tensorboard("PhythmFormer_Train_in_UBFC-rPPG")
+    # try:
+    sbs.train(20)
+    # except:
+    #     pass
+    # finally:
+    #     sbs.save_best_checkpoint(MODEL_SAVE_PATH)
 else:
     try:
         sbs.load_checkpoint(MODEL_SAVE_PATH)

@@ -11,3 +11,4 @@ vmdpy==0.2
 PyWavelets==1.6.0
 scipy==1.13.1
 h5py==3.12.1
+timm==1.0.12

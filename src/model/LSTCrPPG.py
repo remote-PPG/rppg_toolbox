@@ -1,3 +1,5 @@
+# from https://github.com/remotebiosensing/rppg
+
 import torch
 from torch import nn
 
@@ -15,6 +17,9 @@ class LSTCrPPG(nn.Module):
         e = self.encoder_block.forward(x)
         out = self.decoder_block.forward(e)
         return out.view(B,T)
+
+
+
 class EncoderBlock(nn.Module):
     def __init__(self):
         super(EncoderBlock, self).__init__()
@@ -110,30 +115,14 @@ class DecoderBlock(nn.Module):
 
 
 
-    def forward(self, encoded_features):
-        encoded_feature_0,encoded_feature_1,encoded_feature_2,encoded_feature_3,\
-            encoded_feature_4,encoded_feature_5,encoded_feature_6 = encoded_features
-
-
-        d = self.decoder_block6_transpose(encoded_feature_0)
-        d = self.TARM(encoded_feature_1, d)
-        d6 = self.decoder_block6(d)
-        d5 = self.decoder_block5(self.TARM(encoded_feature_2,self.decoder_block5_transpose(d6)))
-        d4 = self.decoder_block4(self.TARM(encoded_feature_3,self.decoder_block4_transpose(d5)))
-        d3 = self.decoder_block3(self.TARM(encoded_feature_4,self.decoder_block3_transpose(d4)))
-        d2 = self.decoder_block2(self.TARM(encoded_feature_5,self.decoder_block2_transpose(d3)))
-        d1 = self.decoder_block1(self.TARM(encoded_feature_6,self.decoder_block1_transpose(d2)))
-
-        # d6 = self.decoder_block6(self.decoder_block6_transpose(encoded_feature_0))
-        # d5 = self.decoder_block5(self.decoder_block5_transpose(d6))
-        # d4 = self.decoder_block4(self.decoder_block4_transpose(d5))
-        # d3 = self.decoder_block3(self.decoder_block3_transpose(d4))
-        # d2 = self.decoder_block2(self.decoder_block2_transpose(d3))
-        # d1 = self.decoder_block1(self.decoder_block1_transpose(d2))
-
-
+    def forward(self, encoded_feature):
+        d6 = self.decoder_block6(self.TARM(encoded_feature[1], self.decoder_block6_transpose(encoded_feature[0])))
+        d5 = self.decoder_block5(self.TARM(encoded_feature[2],self.decoder_block5_transpose(d6)))
+        d4 = self.decoder_block4(self.TARM(encoded_feature[3],self.decoder_block4_transpose(d5)))
+        d3 = self.decoder_block3(self.TARM(encoded_feature[4],self.decoder_block3_transpose(d4)))
+        d2 = self.decoder_block2(self.TARM(encoded_feature[5],self.decoder_block2_transpose(d3)))
+        d1 = self.decoder_block1(self.TARM(encoded_feature[6],self.decoder_block1_transpose(d2)))
         predictor = self.predictor(d1)
-        # return torch.sigmoid(predictor)
         return predictor
 
     def TARM(self, e,d):
@@ -148,7 +137,9 @@ class DecoderBlock(nn.Module):
         temporal_attention_map = e @ torch.transpose(d,3,2)
         temporal_attention_map = nn.functional.softmax(temporal_attention_map,dim=-1)
         refined_map = temporal_attention_map@e
+        
         out = torch.reshape(refined_map,shape)
+        # out = (1 + torch.reshape(refined_map,shape)) * target
         return out
 
 class ConvBlock3D(nn.Module):

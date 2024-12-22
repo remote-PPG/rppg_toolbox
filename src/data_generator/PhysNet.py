@@ -23,7 +23,8 @@ class PhysNetDataGenerator(Base):
     def __init__(self, config:PhysNetDataConfig):
         super().__init__(config)
     def generate_cache(self,data,cache:DataSetCache):
-        self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        # 原本的face_cascade检测人脸效果不佳
+        # self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         self.dataset_index_lock = threading.Lock()
         self.dataset_index = 0
 
